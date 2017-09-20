@@ -1,0 +1,47 @@
+<!doctype html>
+<html ng-app="myParser">
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.5/angular.min.js"></script>
+    <script src="excelParser.js"></script>
+    <link rel="stylesheet" href="parser.css">
+  </head>
+  <body>
+    <h2>My Own Parser</h2>
+    <div ng-controller="myParserCntrl as cntrl">
+        <form ng-submit="cntrl.parseExcel()">
+        <table>
+            <tr>
+                <td>
+                    Please Chose the input file
+                </td>
+                <td>
+                    <input type="text" ng-model="cntrl.inputExcelFileName" ng-change="cntrl.testOne(cntrl.inputExcelFileName)"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Choosen file is 
+                </td>
+                <td>
+                    <ul class="unstyled">
+                        <li ng-repeat="files in cntrl.fileList">
+                            {{files}}
+                          </li>
+                      </ul>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    
+                </td>
+                <td>
+                    <input class="btn-primary" type="submit" value="calculate">
+                </td>
+            </tr>
+        </table>
+    </form>
+    <p ng-bind="resultval"></p>
+
+    </div>
+  </body>
+</html>
