@@ -8,38 +8,64 @@
   <body>
     <h2>My Own Parser</h2>
     <div ng-controller="myParserCntrl as cntrl">
-        <form ng-submit="cntrl.parseExcel()">
+        
         <table>
             <tr>
+                <form ng-submit="cntrl.parseExcel()" name="cntrl.uploadForm">
                 <td>
                     Please Chose the input file
                 </td>
                 <td>
-                    <input type="text" ng-model="cntrl.inputExcelFileName" ng-change="cntrl.testOne(cntrl.inputExcelFileName)"/>
+                    <input type="file" ng-model="cntrl.inputExcelFileName" 
+                        name="excelFileName"
+                        ng-change="cntrl.testOne(cntrl.inputExcelFileName)"/>
                 </td>
+                <td>
+                        <input class="btn-primary" type="submit" value="show headers">
+                </td>
+                </form>
             </tr>
             <tr>
+                <form ng-submit="cntrl.addForEdit()" name="cntrl.chooseForEditForm">
                 <td>
-                    Choosen file is 
+                    Headers read from given excel
                 </td>
                 <td>
                     <ul class="unstyled">
-                        <li ng-repeat="files in cntrl.fileList">
-                            {{files}}
-                          </li>
+                        <select name="multipleSelect" id="multipleSelect" ng-model="cntrl.choosenHeaderIndex"
+                            
+                            multiple>
+                            <option ng-repeat="option in cntrl.fileList" value="{{option.id}}">{{option.name}}</option>
+                        </select>
                       </ul>
                 </td>
+                <td>
+                        <input class="btn-primary" type="submit" value="Add to edit area">
+                </td>
+                </form>
             </tr>
             <tr>
                 <td>
                     
                 </td>
                 <td>
-                    <input class="btn-primary" type="submit" value="calculate">
+                    <ul class="unstyled">
+                    <li ng-repeat="info in cntrl.headerAndStyle">
+                        <p class="{{info.hdstyle}}">{{info.header}}</p>
+                    </li>
+                    </ul>
+                </td>
+                <td>
+                    <form ng-submit="cntrl.increaseFontSize()" name="cntrl.increaseIndent">
+                        <input class="btn-primary" type="submit" value="a+">
+                    </form>
+                    <form ng-submit="cntrl.decreaseFontSize()" name="cntrl.decreaseIndent">
+                            <input class="btn-primary" type="submit" value="a-">
+                    </form>
                 </td>
             </tr>
         </table>
-    </form>
+    
     <p ng-bind="resultval"></p>
 
     </div>

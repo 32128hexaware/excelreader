@@ -2,3 +2,21 @@
   text-decoration: line-through;
   color: grey;
 }
+.font_look_0 {
+  font-family:'Times New Roman';
+  color:#003399;
+  white-space:pre-wrap;
+  font-size:38px
+}
+.font_look_1 {
+  font-family:'Times New Roman';
+  color:#003399;
+  white-space:pre-wrap;
+  font-size:42px
+}
+.font_look_2 {
+  font-family:'Times New Roman';
+  color:#003399;
+  white-space:pre-wrap;
+  font-size:46px
+}
