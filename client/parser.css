@@ -69,6 +69,12 @@ div {
   padding: 10px
 }
 
+.scroll-style {
+  max-width: 500px;
+  height: 150px;
+  max-height: 150px;
+  overflow-y: scroll;
+}
 
 .done-true {
   text-decoration: line-through;
@@ -78,17 +84,35 @@ div {
   font-family:'Times New Roman';
   color:#003399;
   white-space:pre-wrap;
-  font-size:38px
+  font-size:24px
 }
 .font_look_1 {
   font-family:'Times New Roman';
   color:#003399;
   white-space:pre-wrap;
-  font-size:42px
+  font-size:28px
 }
 .font_look_2 {
   font-family:'Times New Roman';
   color:#003399;
   white-space:pre-wrap;
-  font-size:46px
+  font-size:32px
+}
+.font_look_3 {
+  font-family:'Times New Roman';
+  color:#003399;
+  white-space:pre-wrap;
+  font-size:36px
+}
+.font_look_4 {
+  font-family:'Times New Roman';
+  color:#003399;
+  white-space:pre-wrap;
+  font-size:40px
+}
+.font_look_5 {
+  font-family:'Times New Roman';
+  color:#003399;
+  white-space:pre-wrap;
+  font-size:44px
 }

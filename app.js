@@ -7,6 +7,8 @@
     var fs =require('fs');
     var trim = require('trim');
 
+    var docWriter = require('./server/docWriter');
+
     const localfolder = './src/log';
     const logFile= 'result.log';
 
@@ -66,7 +68,7 @@
                 var worksheet = workbook.getWorksheet('ADM');
                 var row = worksheet.getRow(1);
                 var headerContent = [];
-                var headerId = 1;
+                var headerId = 0;
                 row.eachCell(function(cell, colNumber) {
                     //console.log('Cell ' + colNumber + ' = ' + cell.value);
                     var colData = cell.value;
@@ -87,7 +89,7 @@
                         }
                         
                         if(headData) {
-                            headerContent.push({id:headerId,name:headData});
+                            headerContent.push({id:headerId,name:headData,columnNumber:colNumber});
                             headerId++;
                         }
                         
@@ -98,6 +100,93 @@
             });
     });
 
+    app.post('/getPreviewData', function(req, res) {
+        console.log("Get Request is "+JSON.stringify(req.body));
+
+        var workbook = new Excel.Workbook();
+        var asciIndex = 64;
+        var previewContent = [];
+
+        workbook.xlsx.readFile('./data/ADM_Outing_30_06_17.xlsx')
+            .then(function() {
+
+
+                console.log('Reading file');
+                var worksheet = workbook.getWorksheet('ADM');
+                
+                var choosenColumnNumbers = req.body.columnNumbers;
+                var totalRows = worksheet.rowCount;
+
+                console.log(totalRows)
+
+                for(var rowNum = 2; rowNum <= 4; rowNum++) {
+                    for(var i=0; i<choosenColumnNumbers.length; i++) {
+                        
+                        var coloumnName = String.fromCharCode(asciIndex+choosenColumnNumbers[i]) + rowNum;
+                        var columnValue = worksheet.getCell(coloumnName).value;
+                        previewContent.push({id : rowNum, 
+                            name : columnValue, 
+                            columnNumber : choosenColumnNumbers[i]});
+                        
+                    }
+                }
+                
+
+                return res.status(200).send({previewData: previewContent});    
+            });
+
+
+    });
+
+
+    app.post('/downloadFile', function(req, res) {
+        
+        var documentStyle = req.body.docStyle;
+        var docColumNumber = req.body.columnNumbers;
+
+        var workbook = new Excel.Workbook();
+        var asciIndex = 64;
+        var previewContent = [];
+
+        workbook.xlsx.readFile('./data/ADM_Outing_30_06_17.xlsx')
+            .then(function() {
+
+                var documentContent = [];
+                console.log('Reading file');
+                
+                var worksheet = workbook.getWorksheet('ADM');
+                
+                
+                var totalRows = worksheet.rowCount;
+
+                console.log(totalRows)
+
+                for(var rowNum = 2; rowNum <= 4; rowNum++) {
+                    for(var i=0; i<docColumNumber.length; i++) {
+                        
+                        var coloumnName = String.fromCharCode(asciIndex+docColumNumber[i]) + rowNum;
+                        var columnValue = worksheet.getCell(coloumnName).value;
+                        var fontSize = (documentStyle.styleIndex * 4) + 24;
+                        documentContent.push(
+                            {
+                                type: "text",
+                                val: columnValue,
+                                lopt: { align: 'centre' },
+                                opt: { color:'#003399', font_face: 'Times New Roman', font_size: fontSize }
+                            }
+                        );
+                        
+                    }
+                }
+                
+                docWriter.prepareDoc(documentContent, './data/result.docx')
+
+                return res.status(200).send({previewData: documentContent});    
+            });
+        
+
+
+    });
 
     app.listen('3000', function(){
         console.log('running on 3000...');

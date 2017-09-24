@@ -37,7 +37,7 @@
                                     </form>
                                 </tr>
                                 <tr align="left">
-                                    <form ng-submit="cntrl.addForEdit()" name="cntrl.chooseForEditForm">
+                                    
                                     <td>
                                         Headers read from given excel
                                     </td>
@@ -51,32 +51,48 @@
                                           </ul>
                                     </td>
                                     <td>
-                                            <input class="btn-primary" type="submit" value="Add to edit area">
+                                       
                                     </td>
-                                    </form>
-                                </tr>
-                                <tr align="left">
-                                    <td>
-                                        
-                                    </td>
-                                    <td>
-                                        <ul class="unstyled">
-                                        <li ng-repeat="info in cntrl.headerAndStyle">
-                                            <p class="{{info.hdstyle}}">{{info.header}}</p>
-                                        </li>
-                                        </ul>
-                                    </td>
-                                    <td>
-                                        <form ng-submit="cntrl.increaseFontSize()" name="cntrl.increaseIndent">
-                                            <input class="btn-primary" type="submit" value="a+">
-                                        </form>
-                                        <form ng-submit="cntrl.decreaseFontSize()" name="cntrl.decreaseIndent">
-                                                <input class="btn-primary" type="submit" value="a-">
-                                        </form>
-                                    </td>
+                                    
                                 </tr>
                             </table>
-                        
+                            <table>
+                                    <tr><td>
+                                <form ng-submit="cntrl.addForEdit()" name="cntrl.chooseForEditForm">
+                                    <input class="btn-primary" type="submit" value="Add to edit area">
+                                </form>
+                                </td>
+                                <td>
+                                <form ng-submit="cntrl.increaseFontSize()" name="cntrl.increaseIndent">
+                                    <input class="btn-primary" type="submit" value="a+">
+                                </form>
+                                        </td>
+                                        <td>
+                                <form ng-submit="cntrl.decreaseFontSize()" name="cntrl.decreaseIndent">
+                                    <input class="btn-primary" type="submit" value="a-">
+                                </form>
+                                        </td>
+                                <td>
+                                    <form ng-submit="cntrl.getPreviewData()" name="cntrl.showPreview">
+                                        <input class="btn-primary" type="submit" value="show preview">
+                                    </form>
+                                </td>
+                                <td>
+                                    <form ng-submit="cntrl.prepareResultDoc()" name="cntrl.prepareDoc">
+                                        <input class="btn-primary" type="submit" value="Prepare Document">
+                                    </form>
+                                </td>
+                                    </tr>
+                                </table>
+                                <div class="scroll-style">
+                                    <table><tr><td>
+                                    <ul class="unstyled">
+                                        <li ng-repeat="info in cntrl.headerAndStyle">
+                                            <p class="{{info.hdstyle}}">{{info.header.name}}</p>
+                                        </li>
+                                    </ul>
+                                    </td></tr></table>
+                                </div>
 
                     </div>
            
