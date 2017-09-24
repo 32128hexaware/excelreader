@@ -18,7 +18,9 @@
     "save": "^2.3.1",
     "exceljs":"0.6.0",
     "officegen":"0.4.5",
-    "barcode-generator":"0.1.0"
+    "multer": "1.1.0",
+    "ng-file-upload": "12.2.13",
+    "trim":"0.0.1"
   },
   "author": "JP Bose",
   "license": "ISC"

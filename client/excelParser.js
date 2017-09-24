@@ -4,12 +4,15 @@ angular.module('myParser', [])
 
     var inst = this;
 
+    
+
     inst.choosenHeaderIndex = [];
     inst.choosenHeaders = [];
     
     inst.choosenStyle = 'font_look_0';
     inst.currentChoosenStyleIndex = 0;
 
+    
 
     inst.headerAndStyle = [];
 
