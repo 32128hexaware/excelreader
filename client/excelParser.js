@@ -1,5 +1,5 @@
-angular.module('myParser', [])
-  .controller('myParserCntrl', ['$http', function($http, $scope) {
+angular.module('fileUpload', ['ngFileUpload'])
+  .controller('myParserCntrl', ['Upload','$window','$http', function(Upload,$window, $http, $scope) {
     
 
     var inst = this;
@@ -46,26 +46,50 @@ angular.module('myParser', [])
 
     inst.testOne = function(test) {
       console.log(test);
-      $scope.resultval=test;
+//       $scope.resultval=test;
     }
 
-    inst.parseExcel = function() {
+    inst.parseExcel = function(uploadedFile) {
       inst.reset();
 
-      inst.inputExcelFile = inst.uploadForm.excelFileName;
-      console.log("File Name is "+ inst.inputExcelFile);
+      
 
+      if (uploadedFile) { //check if from is valid
+        Upload.upload({
+          url: '/parseExcel', //webAPI exposed to upload the file
+          data:{file:uploadedFile} //pass file as data, should be user ng-model
+        }).then(function (resp) { //upload function returns a promise
+          var headings = resp.data.headers;
+          inst.fileList = headings;
+          
+        }, function (err) {
+          
+          //catch error
+            console.log('Error status: ' + err.status);
+            $window.alert('Error status: ' + err.status);
+        }, function (evt) {
+            console.log(evt);
+          
+        });
+      }else {
+        $window.alert('Demo version only supports excel files. Please Upgrade to complete version for accessing diferent file types ');
+      }
+      
+      
+
+
+      /*
       $http({
         method: 'POST',
         url: "/parseExcel",
         headers: {'Content-Type': 'application/json'},
-        data: {file:inst.inputExcelFile}
+        data: {file:uploadedFile}
       }).then(function(res) {
         var headings = res.data.headers;
         inst.fileList = headings;
         
       });
-      
+      */
 
     }
 

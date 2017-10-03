@@ -12,6 +12,8 @@
     const localfolder = './src/log';
     const logFile= 'result.log';
 
+    var uploadedFileName=null;
+
 
     app.use(function(req, res, next) { //allow cross origin requests
         res.setHeader("Access-Control-Allow-Methods", "POST, PUT, OPTIONS, DELETE, GET");
@@ -34,9 +36,10 @@
             cb(null, './data/');
         },
         filename: function (req, file, cb) {
-           filenamepasiing = "./data/"+file.originalname
+            uploadedFileName = "./data/"+file.originalname
             fileName=file.originalname;
               var datetimestamp = Date.now();
+
             cb(null, file.originalname);
         }
     });
@@ -47,57 +50,53 @@
     
     app.post('/parseExcel', function(req, res) {
     
-
         upload(req,res,function(err){
             if(err){
                 console.log("Error occured");
                  res.json({error_code:1,err_desc:err});
                  return;
             }
-            console.log(req.body);
-        });
-
-        console.log("Request is "+JSON.stringify(req.body));
-
-        var workbook = new Excel.Workbook();
-        workbook.xlsx.readFile('./data/ADM_Outing_30_06_17.xlsx')
-            .then(function() {
-
-
-                console.log('Reading file');
-                var worksheet = workbook.getWorksheet('ADM');
-                var row = worksheet.getRow(1);
-                var headerContent = [];
-                var headerId = 0;
-                row.eachCell(function(cell, colNumber) {
-                    //console.log('Cell ' + colNumber + ' = ' + cell.value);
-                    var colData = cell.value;
-                    var headData = '';
-
-                    if(colData) {
-                        //headerContent.push(cell.value);
-                        if(colData.richText) {
-                            
-                            var colMessage = colData.richText;
-                            var colMessageLen = colMessage.length;
-                            for(var i=0; i<colMessageLen; i++) {
-                                headData += trim(colMessage[i].text);
+            var workbook = new Excel.Workbook();
+            workbook.xlsx.readFile(uploadedFileName)
+                .then(function() {
+    
+    
+                    console.log('Reading file');
+                    var worksheet = workbook.getWorksheet(1);
+                    var row = worksheet.getRow(1);
+                    var headerContent = [];
+                    var headerId = 0;
+                    row.eachCell(function(cell, colNumber) {
+                        //console.log('Cell ' + colNumber + ' = ' + cell.value);
+                        var colData = cell.value;
+                        var headData = '';
+    
+                        if(colData) {
+                            //headerContent.push(cell.value);
+                            if(colData.richText) {
+                                
+                                var colMessage = colData.richText;
+                                var colMessageLen = colMessage.length;
+                                for(var i=0; i<colMessageLen; i++) {
+                                    headData += trim(colMessage[i].text);
+                                }
+                                
+                            } else {
+                                headData = cell.value;
                             }
                             
-                        } else {
-                            headData = cell.value;
+                            if(headData) {
+                                headerContent.push({id:headerId,name:headData,columnNumber:colNumber});
+                                headerId++;
+                            }
+                            
                         }
-                        
-                        if(headData) {
-                            headerContent.push({id:headerId,name:headData,columnNumber:colNumber});
-                            headerId++;
-                        }
-                        
-                    }
+                    });
+    
+                    return res.status(200).send({headers: headerContent});    
                 });
+        });
 
-                return res.status(200).send({headers: headerContent});    
-            });
     });
 
     app.post('/getPreviewData', function(req, res) {
@@ -107,7 +106,7 @@
         var asciIndex = 64;
         var previewContent = [];
 
-        workbook.xlsx.readFile('./data/ADM_Outing_30_06_17.xlsx')
+        workbook.xlsx.readFile(uploadedFileName)
             .then(function() {
 
 
@@ -148,7 +147,7 @@
         var asciIndex = 64;
         var previewContent = [];
 
-        workbook.xlsx.readFile('./data/ADM_Outing_30_06_17.xlsx')
+        workbook.xlsx.readFile(uploadedFileName)
             .then(function() {
 
                 var documentContent = [];
