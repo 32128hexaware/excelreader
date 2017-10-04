@@ -111,7 +111,7 @@
 
 
                 console.log('Reading file');
-                var worksheet = workbook.getWorksheet('ADM');
+                var worksheet = workbook.getWorksheet(1);
                 
                 var choosenColumnNumbers = req.body.columnNumbers;
                 var totalRows = worksheet.rowCount;
@@ -142,7 +142,7 @@
         
         var documentStyle = req.body.docStyle;
         var docColumNumber = req.body.columnNumbers;
-
+        console.log("Style is as follows "+JSON.stringify(documentStyle));
         var workbook = new Excel.Workbook();
         var asciIndex = 64;
         var previewContent = [];
@@ -153,7 +153,7 @@
                 var documentContent = [];
                 console.log('Reading file');
                 
-                var worksheet = workbook.getWorksheet('ADM');
+                var worksheet = workbook.getWorksheet(1);
                 
                 
                 var totalRows = worksheet.rowCount;
@@ -165,7 +165,8 @@
                         
                         var coloumnName = String.fromCharCode(asciIndex+docColumNumber[i]) + rowNum;
                         var columnValue = worksheet.getCell(coloumnName).value;
-                        var fontSize = (documentStyle.styleIndex * 4) + 24;
+                        var fontSize = (documentStyle[i].styleIndex * 4) + 24;
+                        console.log(documentStyle[i].styleIndex);
                         documentContent.push(
                             {
                                 type: "text",
