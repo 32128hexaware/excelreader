@@ -6,8 +6,10 @@
     var multer = require('multer');
     var fs =require('fs');
     var trim = require('trim');
+    var path = require('path');
 
     var docWriter = require('./server/docWriter');
+    var barcodeGen = require('./server/barcodeGen');
 
     const localfolder = './src/log';
     const logFile= 'result.log';
@@ -167,15 +169,26 @@
                         var columnValue = worksheet.getCell(coloumnName).value;
                         var fontSize = (documentStyle[i].styleIndex * 4) + 24;
                         console.log(documentStyle[i].styleIndex);
-                        documentContent.push(
-                            {
-                                type: "text",
-                                val: columnValue,
-                                lopt: { align: 'centre' },
-                                opt: { color:'#003399', font_face: 'Times New Roman', font_size: fontSize }
-                            }
-                        );
                         
+                        if(documentStyle[i].barcode) {
+                            barcodeGen.generateBarcode(columnValue);
+                            documentContent.push(
+                                {
+                                    type: "image",
+                                    path: path.join('/niraineer', 'imgs', content)
+                                }
+                            );    
+                        } else {
+                            documentContent.push(
+                                {
+                                    type: "text",
+                                    val: columnValue,
+                                    lopt: { align: 'centre' },
+                                    opt: { color:'#003399', font_face: 'Times New Roman', font_size: fontSize }
+                                }
+                            );
+                        }
+
                     }
                 }
                 

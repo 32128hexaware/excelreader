@@ -93,12 +93,21 @@ angular.module('fileUpload', ['ngFileUpload'])
 
     }
 
+    inst.markForBarcode = function() {
+      inst.chooseForDoc(true);
+    }
+
     inst.addForEdit = function() {
+      inst.chooseForDoc(false);
+    }
+
+
+    inst.chooseForDoc = function(isBarcode) {
         angular.forEach(inst.choosenHeaderIndex, function(value, key) {
           var choosenHead = inst.fileList[value];
           inst.choosenHeaders.push(choosenHead);
           //console.log(choosenHead);
-          inst.headerAndStyle.push({header:choosenHead, hdstyle:'font_look_0', styleIndex:0});
+          inst.headerAndStyle.push({header:choosenHead, hdstyle:'font_look_0', styleIndex:0, barcode:isBarcode});
         });
     }
 

@@ -2,17 +2,20 @@ var officegen = require('officegen');
 var docx = officegen ( 'docx' );
 var fs = require('fs');
 var async = require('async');
+var path = require('path');
 
-/*
 var data = [
     {
         type: "text",
         val: "Fonts face and size.",
         lopt: { align: 'centre' },
         opt: { color:'#003399', font_face: 'Times New Roman', font_size: 42 }
+	},
+	{
+        type: "image",
+        path: path.join('/niraineer', 'imgs', 'mycode.png')
     }
-];*/
- 
+];
 
 exports.prepareDoc = function(content, resultPath) {
 
@@ -41,4 +44,4 @@ exports.prepareDoc = function(content, resultPath) {
 
 }
 
-
+//this.prepareDoc(data, '/niraineer/result.docx');
